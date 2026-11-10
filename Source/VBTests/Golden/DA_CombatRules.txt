@@ -1,0 +1,219 @@
+ability Ability.Attack.Air cancels-on-start Ability.Attack.Light
+ability Ability.Attack.Air requires-state State.Combat.AirOpening
+ability Ability.Attack.Air why An open air opportunity routes the next attack to the chase and cancels the ground light attack.
+ability Ability.Attack.CinematicSkill blocks-while-running Ability.Attack
+ability Ability.Attack.CinematicSkill blocks-while-running Ability.Defense
+ability Ability.Attack.CinematicSkill blocks-while-running Ability.Interact
+ability Ability.Attack.CinematicSkill why 한 번에 하나의 연출만 - 공격·회피·가드·상호작용은 기다린다. 가드가 연출 옆에 켜지면 맞는 타격이 패링 판정으로 간다. 가드는 연출을 끊지 않는다 - user «끝까지 나간다 (추천)» (2026-10-25).
+ability Ability.Attack.Riposte requires-state State.Combat.RiposteWindow
+ability Ability.Attack.Riposte why 반격은 패링이 연 반격 창 안에서만 나간다(DEC-009 phase-2).
+ability Ability.Combat.FinisherWindow blocks-while-running Ability.Attack
+ability Ability.Combat.FinisherWindow why 처형 창 동안 피해자의 새 공격을 막는다. 이미 실행 중인 스윙은 창이 열릴 때 State.Combat.FinisherWindow 줄이 취소한다 - 새 공격 막기와 실행 중 취소를 나누지 않은 것이 «처형에 공격 애니가 겹친다» 의 절반이었다.
+ability Ability.Defense.Dodge cancels-on-start Ability.Locomotion.Crouch
+ability Ability.Defense.Dodge why 앉은 채 회피하면 일어서며 회피한다 - 회피 몽타주는 서기 전신 클립이라 앉은 캡슐 위에서 돌면 다리가 땅에 박힌다(.sw/crouch-montage 2.3).
+ability Ability.Defense.Guard cancels-on-start Ability.Attack.Light
+ability Ability.Defense.Guard cancels-on-start Ability.Attack.Riposte
+ability Ability.Defense.Guard why 공격 중 누르면 그 공격을 끊고 바로 가드한다 - user «언제든 바로 가드» (2026-10-25, .sw/guard-cancel/design.md). 잎만 끊는다 - 처형·시네마틱 스킬처럼 끊기면 안 되는 공격은 그쪽 줄이 Ability.Defense 를 막는다.
+ability Ability.Interact blocks-while-running Ability.Attack
+ability Ability.Interact blocks-while-running Ability.Defense
+ability Ability.Interact why 홀드 동안 공격·회피·가드를 막는다 - 칼이 수납된 채 공격이 나가거나 레버를 당기는 중에 몸이 굴러간다. 급하면 떼면 된다.
+ability Ability.Item.Use blocks-while-running Ability.Attack
+ability Ability.Item.Use blocks-while-running Ability.Interact
+ability Ability.Item.Use why 쓰는 동안 공격·상호작용을 막는다. 회피·가드는 막지 않는다 - 켜지면 사용을 끊는다(user 결정 2026-10-05).
+ability Ability.Locomotion.Sprint blocks-while-running Ability.Locomotion.Crouch
+ability Ability.Locomotion.Sprint why 달리는 중의 C 는 앉기가 아니라 미끄러지기다(AVBCharacter 가 미끄러지기로 보낸다) - 그래서 달리는 동안 앉기 능력은 켜지지 않는다.
+ability Ability.Medical.Execute blocks-while-running Ability.Attack
+ability Ability.Medical.Execute blocks-while-running Ability.Defense
+ability Ability.Medical.Execute why 처형이 도는 동안 공격·회피·가드를 막는다 - 연출 갈래는 장면이 끝날 때까지 살아 있어 그 사이 입력이 처형 장면 위에 겹친다. user «끊기지 않아야돼» (09-13).
+ability Ability.Reaction.HitReact cancels-on-start Ability.Interact
+ability Ability.Reaction.HitReact why 맞으면 상호작용(레버 홀드 등)을 끊는다 - 맞으면서 레버가 끝까지 당겨지면 안 된다.
+ability Ability.Reaction.Knockdown cancels-on-start Ability.Interact
+ability Ability.Reaction.Knockdown why 넘어지면 상호작용을 끊는다(경직과 같다). 공격은 막지 않는다 - 엎드린 채 휘두르는 반격 능력이 공격이다. «경직 중 새 공격 없음» 은 BT 가 Staggered 로 닫혀 있는 것으로 성립한다.
+ability Ability.Reaction.Stagger blocks-while-running Ability.Attack
+ability Ability.Reaction.Stagger cancels-on-start Ability.Interact
+ability Ability.Reaction.Stagger why 경직 중 새 공격을 막는다(진행 중인 스윙은 경직 몽타주가 같은 슬롯을 덮어 끊는다). 경직되면 상호작용을 끊는다 - 상호작용은 몽타주가 없어 슬롯 덮기로 안 끊긴다.
+ability Ability.Recovery.GetUp blocks-while-running Ability.Attack
+ability Ability.Recovery.GetUp why 처형을 버티고 일어나는 동안 공격을 막는다 - 일어나자마자 때릴 수 있으면 버틴 것이 그냥 이득이 된다.
+state State.Combat.AirOpening blocks-start Ability.Attack.Light
+state State.Combat.AirOpening why 쫓을 기회가 열린 동안의 공격 입력은 공중 콤보가 받는다 - 경공격이 같이 켜지지 않게.
+state State.Combat.AirRecovery blocks-start Ability.Attack
+state State.Combat.AirRecovery why Air combo recovery blocks new attacks until landing; dodge remains available.
+state State.Combat.Attacking blocks-start Ability.Attack.CinematicSkill
+state State.Combat.Attacking blocks-start Ability.Interact
+state State.Combat.Attacking blocks-start Ability.Item.Use
+state State.Combat.Attacking blocks-start Ability.Locomotion.Crouch
+state State.Combat.Attacking blocks-start Ability.Locomotion.Sprint
+state State.Combat.Attacking blocks-start Ability.Weapon.Summon
+state State.Combat.Attacking why 공격 중에는 달리기·앉기·무기 꺼내기·시네마틱 스킬·상호작용·아이템 사용을 시작하지 않는다. 앉기: 몸통을 쓰는 동작 도중 자세를 바꾸면 «서기 몽타주 + 앉은 캡슐» 이 된다(.sw/crouch-montage 2.1). 시네마틱 스킬: 한 번에 하나의 연출만.
+state State.Combat.Attacking.Air blocks-start Ability.Attack.Light
+state State.Combat.Attacking.Air why 공중 연타 중에는 땅 경공격을 시작하지 않는다.
+state State.Combat.DodgeCommit blocks-start Ability.Attack.Light
+state State.Combat.DodgeCommit why 회피 시작 AttackCancelSeconds 안에는 경공격이 구르기를 끊지 못한다. 입력은 저장했다가 커밋이 풀리면 낸다 - user «회피하다가 바로 공격하면 회피 도중에 끊긴다» (2026-09-05). 회피는 공격을 언제든 끊는다(비대칭이 의도).
+state State.Combat.Dodging blocks-start Ability.Defense.Guard
+state State.Combat.Dodging blocks-start Ability.Interact
+state State.Combat.Dodging blocks-start Ability.Item.Use
+state State.Combat.Dodging blocks-start Ability.Locomotion.Crouch
+state State.Combat.Dodging blocks-start Ability.Reaction.Knockdown
+state State.Combat.Dodging blocks-start Ability.Reaction.Stagger
+state State.Combat.Dodging why 회피 중에는 가드에 들어가지 않고, 경직·넘어짐이 걸리지 않는다(회피 무적이 기절 게이지를 막지만 다른 경로를 대비해 명시). 앉기·상호작용·아이템 사용도 시작하지 않는다.
+state State.Combat.Downed blocks-start Ability.Locomotion.Crouch
+state State.Combat.Downed blocks-start Ability.Reaction
+state State.Combat.Downed why 엎드린 몸에는 서 있는 플린치·경직을 틀지 않고 넘어짐을 다시 시작하지 않는다. 그 구간의 피격 반응은 넘어짐 능력의 엎드린 클립이 낸다(.sw/boss/design.md 14.4, .sw/downed-hit 4절).
+state State.Combat.FinisherWindow cancels-on-entry Ability.Attack
+state State.Combat.FinisherWindow cancels-on-entry Ability.Reaction
+state State.Combat.FinisherWindow why 창이 열리는 순간 실행 중인 공격과 반응을 취소한다. 창 동안 맞으면 피격 반응은 나온다 - 자세 게이지 처형에서는 처형할 수 있는 적도 맞으면 반응해야 한다(PostureExecute, 종전에는 창 동안 반응을 막았다).
+state State.Combat.Finishing blocks-start Ability.Attack.CinematicSkill
+state State.Combat.Finishing blocks-start Ability.Interact
+state State.Combat.Finishing blocks-start Ability.Item.Use
+state State.Combat.Finishing blocks-start Ability.Locomotion.Crouch
+state State.Combat.Finishing blocks-start Ability.Reaction
+state State.Combat.Finishing why 처형을 거는 중이면 반응하지 않는다 - 반응 몽타주가 처형과 같은 슬롯이라 끼어들면 플러그인이 장면을 통째로 끝낸다(2026-09-13 실측). user «끊기지 않아야돼 그리고 다른 애들은 때릴 수 없어야돼. \'처형 중\'이니까» (09-13).
+state State.Combat.GettingUp blocks-start Ability.Interact
+state State.Combat.GettingUp blocks-start Ability.Item.Use
+state State.Combat.GettingUp blocks-start Ability.Locomotion.Crouch
+state State.Combat.GettingUp why 일어나는 중에는 앉기·상호작용·아이템 사용을 시작하지 않는다.
+state State.Combat.Guarding blocks-start Ability.Attack.Light
+state State.Combat.Guarding blocks-start Ability.Item.Use
+state State.Combat.Guarding blocks-start Ability.Locomotion.Crouch
+state State.Combat.Guarding blocks-start Ability.Reaction.Knockdown
+state State.Combat.Guarding blocks-start Ability.Reaction.Stagger
+state State.Combat.Guarding why 가드 중 경공격은 안 나간다 - 자기 스윙 중 패링 판정이 사는 모순(FIND-054). 그 자리의 주인은 반격(DEC-009). 가드 중엔 안 비틀린다 - 받아넘김이 이미 그 상황의 반응이다. 아이템 사용: 가드 자세 위에 쓰는 몽타주가 얹힌다. 앉기: 가드 몽타주도 전신 슬롯이라 자세를 바꾸면 캡슐과 어긋난다. 회피는 막지 않는다 - 가드 캔슬 회피는 의도(user 2026-07-26), 대칭 논리로 다시 넣지 말 것.
+state State.Combat.HitReacting blocks-start Ability.Attack.CinematicSkill
+state State.Combat.HitReacting blocks-start Ability.Interact
+state State.Combat.HitReacting blocks-start Ability.Item.Use
+state State.Combat.HitReacting blocks-start Ability.Locomotion.Crouch
+state State.Combat.HitReacting why 맞는 중에는 시네마틱 스킬·앉기·상호작용·아이템 사용을 시작하지 않는다.
+state State.Combat.LockedOn cancels-on-entry Ability.Locomotion.Sprint
+state State.Combat.LockedOn why 락온을 시작하면 질주를 취소한다 - 락온은 상대를 보며 걷는 이동이다. 락온 중 새 질주는 막지 않는다(종전과 같다).
+state State.Combat.PhaseTransition blocks-start Ability.Attack.Enemy
+state State.Combat.PhaseTransition why 보스 페이즈 전환 중에는 적 공격을 시작하지 않는다. BT 데코레이터는 다음 틱이라, 그 사이 코디네이터가 토큰을 주면 태스크가 공격을 켠다.
+state State.Combat.Ragdoll blocks-start Ability.Attack
+state State.Combat.Ragdoll blocks-start Ability.Defense
+state State.Combat.Ragdoll blocks-start Ability.Interact
+state State.Combat.Ragdoll blocks-start Ability.Item.Use
+state State.Combat.Ragdoll blocks-start Ability.Locomotion.Crouch
+state State.Combat.Ragdoll blocks-start Ability.Locomotion.Sprint
+state State.Combat.Ragdoll blocks-start Ability.Medical
+state State.Combat.Ragdoll cancels-on-entry Ability.Attack
+state State.Combat.Ragdoll cancels-on-entry Ability.Defense
+state State.Combat.Ragdoll cancels-on-entry Ability.Interact
+state State.Combat.Ragdoll cancels-on-entry Ability.Item.Use
+state State.Combat.Ragdoll cancels-on-entry Ability.Locomotion.Crouch
+state State.Combat.Ragdoll cancels-on-entry Ability.Locomotion.Sprint
+state State.Combat.Ragdoll cancels-on-entry Ability.Medical
+state State.Combat.Ragdoll why 래그돌(플레이어 넘어짐, 적의 회복형 래그돌) 중에는 이동·몽타주를 쓰는 능력을 시작하지 않고, 래그돌이 시작될 때 실행 중인 것도 취소한다. 물리가 몸을 움직이는 동안 몽타주나 이동 능력이 끼어들면 자세와 캡슐이 어긋난다. 질주도 취소된다 - 질주 능력이 켜진 채 걸으면 질주 상태가 남는다.
+state State.Combat.RiposteWindow blocks-start Ability.Attack.Light
+state State.Combat.RiposteWindow why 반격 창이 열린 동안 같은 입력의 주인은 반격이다. 경공격이 먼저 켜지면 반격이 도달하지 못한다 - user «떼어도 0.8초 안이면 나가게» (2026-07-29).
+state State.Combat.Staggered blocks-start Ability.Interact
+state State.Combat.Staggered blocks-start Ability.Item.Use
+state State.Combat.Staggered blocks-start Ability.Locomotion.Crouch
+state State.Combat.Staggered blocks-start Ability.Reaction.HitReact
+state State.Combat.Staggered why 경직 중에는 플린치가 경직 몽타주를 덮지 않는다 - 우선순위 넘어짐 > 경직 > 무거움 > 가벼움(DEC-025 6절). 넘어짐도 Staggered 를 들어 함께 막힌다.
+state State.Combat.SuperArmor blocks-start Ability.Reaction.HitReact
+state State.Combat.SuperArmor why 슈퍼아머 중에는 플린치하지 않는다. 경직은 막지 않는다 - 안 끊기는 정도는 기절 게이지 최대치(MaxPoise)로 표현한다(두 메커니즘이 같은 일을 하지 않게).
+state State.Dead blocks-start Ability
+state State.Dead why 죽은 몸은 아무 능력도 시작하지 않는다. CancelAllAbilities 는 이미 켜진 능력만 끄고 새 시작은 못 막으므로 이 줄이 필수다 - 입력 차단과 이중화(FIND-067, FIND-063). 처형·정화도 포함된다(FIND-165: 그 둘만 이 막기가 없었다).
+state State.Encounter.Held blocks-start Ability.Attack.Enemy
+state State.Encounter.Held cancels-on-entry Ability.Attack
+state State.Encounter.Held why 조우 보류(시네마틱 장면)가 걸리면 실행 중인 공격을 취소하고, 보류 동안 적 공격을 시작하지 않는다 - 멈추기 직전 토큰을 받은 태스크가 켤 수 있다(.sw/cinematic-playback 10절).
+state State.Interacting blocks-start Ability.Item.Use
+state State.Interacting why 상호작용 중에는 아이템을 쓰지 않는다.
+state State.Interacting.SmartObject blocks-start Ability.Attack
+state State.Interacting.SmartObject blocks-start Ability.Defense
+state State.Interacting.SmartObject blocks-start Ability.Interact
+state State.Interacting.SmartObject blocks-start Ability.Locomotion.Crouch
+state State.Interacting.SmartObject blocks-start Ability.Locomotion.Sprint
+state State.Interacting.SmartObject blocks-start Ability.Medical.Execute
+state State.Interacting.SmartObject cancels-on-entry Ability.Locomotion.Crouch
+state State.Interacting.SmartObject cancels-on-entry Ability.Locomotion.Sprint
+state State.Interacting.SmartObject why 스마트 오브젝트(앉기·기대기 등) 사용 중에는 공격·방어·처형·상호작용·앉기·질주를 시작하지 않는다. 사용을 시작할 때 앉기와 질주는 취소한다 - 사용 몽타주와 앉은 캡슐·질주 속도가 겹치지 않게.
+state State.Locomotion.Crouching blocks-start Ability.Attack.Light
+state State.Locomotion.Crouching blocks-start Ability.Locomotion.Sprint
+state State.Locomotion.Crouching why 앉은 채로는 경공격과 달리기를 시작하지 않는다(행동은 서서 한다 - .sw/crouch-montage).
+state State.Traversal.Climb blocks-start Ability.Attack
+state State.Traversal.Climb blocks-start Ability.Defense
+state State.Traversal.Climb blocks-start Ability.Interact
+state State.Traversal.Climb blocks-start Ability.Item.Use
+state State.Traversal.Climb blocks-start Ability.Locomotion.Crouch
+state State.Traversal.Climb blocks-start Ability.Medical
+state State.Traversal.Climb blocks-start Ability.Weapon.Summon
+state State.Traversal.Climb cancels-on-entry Ability.Attack
+state State.Traversal.Climb cancels-on-entry Ability.Defense
+state State.Traversal.Climb cancels-on-entry Ability.Interact
+state State.Traversal.Climb cancels-on-entry Ability.Item.Use
+state State.Traversal.Climb cancels-on-entry Ability.Locomotion.Crouch
+state State.Traversal.Climb cancels-on-entry Ability.Medical
+state State.Traversal.Climb cancels-on-entry Ability.Weapon.Summon
+state State.Traversal.Climb why 벽을 오르는 동안은 매달림과 같다 - 질주만 허용.
+state State.Traversal.Exit blocks-start Ability.Attack
+state State.Traversal.Exit blocks-start Ability.Defense
+state State.Traversal.Exit blocks-start Ability.Interact
+state State.Traversal.Exit blocks-start Ability.Item.Use
+state State.Traversal.Exit blocks-start Ability.Locomotion.Crouch
+state State.Traversal.Exit blocks-start Ability.Medical
+state State.Traversal.Exit blocks-start Ability.Weapon.Summon
+state State.Traversal.Exit cancels-on-entry Ability.Attack
+state State.Traversal.Exit cancels-on-entry Ability.Defense
+state State.Traversal.Exit cancels-on-entry Ability.Interact
+state State.Traversal.Exit cancels-on-entry Ability.Item.Use
+state State.Traversal.Exit cancels-on-entry Ability.Locomotion.Crouch
+state State.Traversal.Exit cancels-on-entry Ability.Medical
+state State.Traversal.Exit cancels-on-entry Ability.Weapon.Summon
+state State.Traversal.Exit why 매달림·등반·사다리에서 올라서는 동작 중에는 담 넘기와 같다(사용자 결정 «넘기·맨틀처럼 막기»).
+state State.Traversal.Hang blocks-start Ability.Attack
+state State.Traversal.Hang blocks-start Ability.Defense
+state State.Traversal.Hang blocks-start Ability.Interact
+state State.Traversal.Hang blocks-start Ability.Item.Use
+state State.Traversal.Hang blocks-start Ability.Locomotion.Crouch
+state State.Traversal.Hang blocks-start Ability.Medical
+state State.Traversal.Hang blocks-start Ability.Weapon.Summon
+state State.Traversal.Hang cancels-on-entry Ability.Attack
+state State.Traversal.Hang cancels-on-entry Ability.Defense
+state State.Traversal.Hang cancels-on-entry Ability.Interact
+state State.Traversal.Hang cancels-on-entry Ability.Item.Use
+state State.Traversal.Hang cancels-on-entry Ability.Locomotion.Crouch
+state State.Traversal.Hang cancels-on-entry Ability.Medical
+state State.Traversal.Hang cancels-on-entry Ability.Weapon.Summon
+state State.Traversal.Hang why 벽에 매달린 동안은 질주를 뺀 입력 능력을 시작하지 않고, 매달리는 순간 실행 중인 것도 취소한다. 공격·회피 몽타주가 매달림 자세를 덮고 루트모션이 캡슐을 벽에서 끌어낸다. 질주는 몽타주가 없고 옆걸음·등반 속도를 고르는 입력이라 허용한다.
+state State.Traversal.Ladder blocks-start Ability.Attack
+state State.Traversal.Ladder blocks-start Ability.Defense
+state State.Traversal.Ladder blocks-start Ability.Interact
+state State.Traversal.Ladder blocks-start Ability.Item.Use
+state State.Traversal.Ladder blocks-start Ability.Locomotion.Crouch
+state State.Traversal.Ladder blocks-start Ability.Medical
+state State.Traversal.Ladder blocks-start Ability.Weapon.Summon
+state State.Traversal.Ladder cancels-on-entry Ability.Attack
+state State.Traversal.Ladder cancels-on-entry Ability.Defense
+state State.Traversal.Ladder cancels-on-entry Ability.Interact
+state State.Traversal.Ladder cancels-on-entry Ability.Item.Use
+state State.Traversal.Ladder cancels-on-entry Ability.Locomotion.Crouch
+state State.Traversal.Ladder cancels-on-entry Ability.Medical
+state State.Traversal.Ladder cancels-on-entry Ability.Weapon.Summon
+state State.Traversal.Ladder why 사다리에 붙은 동안은 매달림과 같다 - 질주만 허용(사용자 결정 «매달림·등반과 똑같이 막는다»).
+state State.Traversal.Move blocks-start Ability.Attack
+state State.Traversal.Move blocks-start Ability.Defense
+state State.Traversal.Move blocks-start Ability.Interact
+state State.Traversal.Move blocks-start Ability.Item.Use
+state State.Traversal.Move blocks-start Ability.Locomotion.Crouch
+state State.Traversal.Move blocks-start Ability.Medical
+state State.Traversal.Move blocks-start Ability.Weapon.Summon
+state State.Traversal.Move cancels-on-entry Ability.Attack
+state State.Traversal.Move cancels-on-entry Ability.Defense
+state State.Traversal.Move cancels-on-entry Ability.Interact
+state State.Traversal.Move cancels-on-entry Ability.Item.Use
+state State.Traversal.Move cancels-on-entry Ability.Locomotion.Crouch
+state State.Traversal.Move cancels-on-entry Ability.Medical
+state State.Traversal.Move cancels-on-entry Ability.Weapon.Summon
+state State.Traversal.Move why 담 넘기·턱 오르기 동작 중에는 질주를 뺀 입력 능력을 막고 취소한다(사용자 결정 «그냥 대충 막으면 안된다 구조에 알맞게»).
+state State.Weapon.Sheathing blocks-start Ability.Interact
+state State.Weapon.Sheathing blocks-start Ability.Item.Use
+state State.Weapon.Sheathing blocks-start Ability.Locomotion.Crouch
+state State.Weapon.Sheathing blocks-start Ability.Weapon.Summon
+state State.Weapon.Sheathing why 무기를 넣는 중에는 꺼내기·앉기·상호작용·아이템 사용을 시작하지 않는다.
+state State.Weapon.Summoning blocks-start Ability.Interact
+state State.Weapon.Summoning blocks-start Ability.Item.Use
+state State.Weapon.Summoning blocks-start Ability.Locomotion.Crouch
+state State.Weapon.Summoning blocks-start Ability.Weapon.Summon
+state State.Weapon.Summoning why 무기를 꺼내는 중에는 다시 꺼내기·앉기·상호작용·아이템 사용을 시작하지 않는다.
+state State.Weapon.TempSheathed blocks-start Ability.Weapon.Summon
+state State.Weapon.TempSheathed why 다른 기능(아이템 사용)이 무기를 임시로 넣어 둔 동안 Tab 이 끼어들면 수납 상태와 실제 소환이 엉킨다. 그 기능이 끝나며 돌려놓는다.
